@@ -1,4 +1,4 @@
-package org.insa.graphs.algorithm.utils; // :D
+package org.insa.graphs.algorithm.utils; 
 
 public class BinaryHeapTest extends PriorityQueueTest {
 
