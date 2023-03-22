@@ -230,7 +230,7 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public double getTravelTime(double speed) {
-        return getLength()/speed;
+        return getLength() * 3600.0 / (speed * 1000.0);
     }
 
     /**
