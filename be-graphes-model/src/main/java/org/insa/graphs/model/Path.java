@@ -198,11 +198,25 @@ public class Path {
      * 
      * @return true if the path is valid, false otherwise.
      * 
-     * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-        return false;
+        boolean ret = true;
+        if (this.arcs.isEmpty()) //si vide return true
+        { ret = true; }
+        else if (this.arcs.get(0).getOrigin().equals(this.origin)) //vérifie que le premier arc commence à l'origine
+        {
+            Arc a1 = this.arcs.get(0); 
+            for (Arc a2 : this.arcs)
+            {
+                if(a1.equals(a2)){} //première itération déjà étudiée 
+                else if((a1.getDestination().equals(a2.getOrigin())) == false) //si deux arcs ne se suivent pas, return false
+                {
+                    ret = false;
+                }
+                a1 = a2;
+            }
+        }
+        return ret;
     }
 
     /**
@@ -230,7 +244,8 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public double getTravelTime(double speed) {
-        return getLength()/speed;
+        // TODO:
+        return 0;
     }
 
     /**
