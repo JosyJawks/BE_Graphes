@@ -56,7 +56,7 @@ public class Path {
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+        // TODO: double min = 40075000;
         return new Path(graph, arcs);
     }
 
@@ -227,7 +227,6 @@ public class Path {
      * @return Time (in seconds) required to travel this path at the given speed (in
      *         kilometers-per-hour).
      * 
-     * @deprecated Need to be implemented.
      */
     public double getTravelTime(double speed) {
         return getLength() * 3600.0 / (speed * 1000.0);
@@ -241,9 +240,15 @@ public class Path {
      * 
      * @deprecated Need to be implemented.
      */
-    public double getMinimumTravelTime() {
-        // TODO:
-        return 0;
+    public double getMinimumTravelTime() 
+    {
+        double min = 40075000;
+        for(Arc a: this.arcs){
+            if (getTravelTime(a.getRoadInformation().getMaximumSpeed()) < min){
+                min = getTravelTime(a.getRoadInformation().getMaximumSpeed());
+            }
+        }
+        return min;
     }
 
 }
