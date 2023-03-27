@@ -256,11 +256,9 @@ public class Path {
      */
     public double getMinimumTravelTime() 
     {
-        double min = 40075000;
+        double min = 0.0;
         for(Arc a: this.arcs){
-            if (getTravelTime(a.getRoadInformation().getMaximumSpeed()) < min){
-                min = getTravelTime(a.getRoadInformation().getMaximumSpeed());
-            }
+                min = min + a.getTravelTime(a.getRoadInformation().getMaximumSpeed());
         }
         return min;
     }
