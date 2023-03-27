@@ -34,8 +34,8 @@ public class Path {
      */
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
+        //TO DO : Ajouter à la liste d'arcs les liaisons entre les noeuds de nodes via linkNodes()
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
         return new Path(graph, arcs);
     }
 
@@ -55,8 +55,8 @@ public class Path {
      */
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
+                //TO DO : Ajouter à la liste d'arcs les liaisons entre les noeuds de nodes via linkNodes()
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO: double min = 40075000;
         return new Path(graph, arcs);
     }
 
@@ -252,7 +252,6 @@ public class Path {
      * 
      * @return Minimum travel time to travel this path (in seconds).
      * 
-     * @deprecated Need to be implemented.
      */
     public double getMinimumTravelTime() 
     {
