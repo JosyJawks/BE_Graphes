@@ -57,13 +57,13 @@ public class Path {
                             }
                         }
                     }
-                    if (fastArc == null) // si on a pas trouvé le bon successeur, on renvoie une erreur
+                    if (fastArc == null) // Si on a pas trouvé le bon successeur, on renvoie une erreur
                     {
                         throw (new IllegalArgumentException(nodes.get(i+1) + "ne figure pas dans les successeurs de " + nodes.get(i)));
                     }
                     arcs.add(fastArc);
                 }
-                else // si le noeud n'a pas de successeur
+                else // Si le noeud n'a pas de successeur
                 {
                     {throw (new IllegalArgumentException(nodes.get(i+1) + "ne figure pas dans les successeurs de " + nodes.get(i)));}
                 }
