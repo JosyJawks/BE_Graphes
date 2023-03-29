@@ -29,14 +29,48 @@ public class Path {
      * 
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
-     * 
-     * @deprecated Need to be implemented.
      */
-    public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
-            throws IllegalArgumentException {
-        //TO DO : Ajouter à la liste d'arcs les liaisons entre les noeuds de nodes via linkNodes()
-        List<Arc> arcs = new ArrayList<Arc>();
-        return new Path(graph, arcs);
+    public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes) throws IllegalArgumentException {
+        // Traitement des cas particuliers (un seul ou aucun point en argument)
+        if (nodes.size() == 1)
+        {return new Path(graph, nodes.get(0));}
+        else if (nodes.size() == 0)
+        {return new Path(graph);}
+        else // Traitement du cas général
+        {
+            List<Arc> arcs = new ArrayList<Arc>();
+            for(int i = 0; i < nodes.size() - 1; i++)
+            {
+                if (nodes.get(i).hasSuccessors())
+                {
+                    Arc fastArc = null;
+                    for (Arc a : nodes.get(i).getSuccessors()) 
+                    {
+                        // Si on a bien le successeur qu'on veut, regarder le plus rapide
+                        if (a.getDestination().equals(nodes.get(i+1)))
+                        {
+                            if (fastArc == null) // Si c'est le premier on initialise fastArc
+                            {fastArc = a;}
+                            else if (fastArc.getMinimumTravelTime() > a.getMinimumTravelTime()) // si a est plus rapide on modifie fastArc
+                            {
+                                fastArc = a;
+                            }
+                        }
+                    }
+                    if (fastArc == null) // si on a pas trouvé le bon successeur, on renvoie une erreur
+                    {
+                        throw (new IllegalArgumentException(nodes.get(i+1) + "ne figure pas dans les successeurs de " + nodes.get(i)));
+                    }
+                    arcs.add(fastArc);
+                }
+                else // si le noeud n'a pas de successeur
+                {
+                    {throw (new IllegalArgumentException(nodes.get(i+1) + "ne figure pas dans les successeurs de " + nodes.get(i)));}
+                }
+            }
+            return new Path(graph, arcs);
+        }
+        
     }
 
     /**
