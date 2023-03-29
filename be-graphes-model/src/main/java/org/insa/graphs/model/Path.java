@@ -55,9 +55,40 @@ public class Path {
      */
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
-                //TO DO : Ajouter à la liste d'arcs les liaisons entre les noeuds de nodes via linkNodes()
         List<Arc> arcs = new ArrayList<Arc>();
-        return new Path(graph, arcs);
+        if(nodes.size()==1){
+            return new Path(graph,nodes.get(0));
+        }
+        else if(nodes.size() == 0){
+            return new Path(graph);
+        }
+        else{
+            int i = 0;
+            Arc shortest = null;
+            for(Node n : nodes) {
+                float minLength =  Float.MAX_VALUE;
+                if (!n.equals(nodes.get(nodes.size()- 1))){
+                    if(n.hasSuccessors()){
+                        for(Arc a : n.getSuccessors()){
+                            if(a.getDestination().equals(nodes.get(i+1))){
+                                if(a.getLength() < minLength){
+                                    shortest = a;
+                                    arcs.add(shortest);
+                                }
+                            }
+                        }
+                        if(shortest.equals(null)){
+                            throw (new IllegalArgumentException(nodes.get(i+1) + "ne figure pas dans les successeurs de" + nodes.get(i) + "\n"));
+                        }
+                    }
+                    else{
+                        throw (new IllegalArgumentException(nodes.get(i) + "n'a pas de successeur\n"));
+                    }
+                }
+                i = i+1; 
+            }
+            return new Path(graph, arcs);
+        }
     }
 
     /**
