@@ -97,29 +97,29 @@ public class Path {
             return new Path(graph);
         }
         else{
-            int i = 0;
-            Arc shortest = null;
-            for(Node n : nodes) {
+            for(int i = 0;i<nodes.size()-1;i++ ){
                 float minLength =  Float.MAX_VALUE;
-                if (!n.equals(nodes.get(nodes.size()- 1))){
-                    if(n.hasSuccessors()){
-                        for(Arc a : n.getSuccessors()){
-                            if(a.getDestination().equals(nodes.get(i+1))){
-                                if(a.getLength() < minLength){
-                                    shortest = a;
-                                    arcs.add(shortest);
-                                }
+                if(nodes.get(i).hasSuccessors()){
+                    Arc shortest = null;
+                    for(Arc a : nodes.get(i).getSuccessors()){
+                        if(a.getDestination().equals(nodes.get(i+1))){
+                            if(shortest == null){
+                                shortest = a;
+                            }
+                            else if(a.getLength() < minLength){
+                                minLength = a.getLength();
+                                shortest = a;
                             }
                         }
-                        if(shortest.equals(null)){
-                            throw (new IllegalArgumentException(nodes.get(i+1) + "ne figure pas dans les successeurs de" + nodes.get(i) + "\n"));
-                        }
                     }
-                    else{
-                        throw (new IllegalArgumentException(nodes.get(i) + "n'a pas de successeur\n"));
+                    if(shortest == null){
+                        throw (new IllegalArgumentException(nodes.get(i+1) + "ne figure pas dans les successeurs de" + nodes.get(i) + "\n"));
                     }
+                    arcs.add(shortest);
                 }
-                i = i+1; 
+                else{
+                    throw (new IllegalArgumentException(nodes.get(i) + "n'a pas de successeur\n"));
+                }
             }
             return new Path(graph, arcs);
         }
