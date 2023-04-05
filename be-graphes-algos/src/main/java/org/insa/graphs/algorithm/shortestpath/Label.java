@@ -1,41 +1,53 @@
 package org.insa.graphs.algorithm.shortestpath;
-import org.insa.graphs.model.Arc;
-import org.insa.graphs.model.Node;
+//import org.insa.graphs.model.Arc;
+//import org.insa.graphs.model.Node;
 
-public class Label {
+public class Label implements Comparable<Label> {
     
-    protected Node currentNode;
+    protected int currentNode;
 
     protected boolean mark;
 
-    protected float realCost;
+    protected double realCost;
 
-    protected Arc father;
+    protected int father;
 
-//Getters
+    //Getters
+    public int getcurrentNode(){
+        return this.currentNode;
+    }
 
-public Node getcurrentNode(){
-    return this.currentNode;
-}
+    public boolean getMark(){
+        return this.mark;
+    }
 
-public boolean getMark(){
-    return this.mark;
-}
+    public double getrealCost(){
+        return this.realCost;
+    }
 
-public float getrealCost(){
-    return this.realCost;
-}
+    public int getFather(){
+        return this.father;
+    }
 
-public Arc getFather(){
-    return this.father;
-}
+    //Methods
+    public double getCost(){
+        double cost;
+        cost = this.realCost;
+        return cost;
+    }
 
-//Methods
-public float getCost(){
-    float cost;
-    cost = this.realCost;
-    return cost;
-}
+    /**
+     * Compare the cost of this label with the cost of the given label.
+     * 
+     * @param other Label to compare this node with.
+     * 
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    @Override
+    public int compareTo(Label other) {
+        return Double.compare(getCost(), other.getCost());
+    }
+
 
 
 }
