@@ -1,19 +1,29 @@
 package org.insa.graphs.algorithm.shortestpath;
-//import org.insa.graphs.model.Arc;
-//import org.insa.graphs.model.Node;
+import java.util.ArrayList;
+
+import org.insa.graphs.model.Arc;
+import org.insa.graphs.model.Node;
 
 public class Label implements Comparable<Label> {
     
-    protected int currentNode;
+    protected Node currentNode;
 
     protected boolean mark;
 
     protected double realCost;
 
-    protected int father;
+    protected Arc father;
+
+    public Label(Node currentNode, boolean mark, double realCost, Arc father)
+    {
+        this.currentNode = currentNode;
+        this.mark = mark;
+        this.realCost = realCost;
+        this.father = father;
+    }
 
     //Getters
-    public int getcurrentNode(){
+    public Node getcurrentNode(){
         return this.currentNode;
     }
 
@@ -25,7 +35,7 @@ public class Label implements Comparable<Label> {
         return this.realCost;
     }
 
-    public int getFather(){
+    public Arc getFather(){
         return this.father;
     }
 
