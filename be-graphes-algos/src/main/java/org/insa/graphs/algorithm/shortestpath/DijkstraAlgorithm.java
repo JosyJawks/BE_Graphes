@@ -48,7 +48,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
         labels[data.getOrigin().getId()].realCost = 0; //Initialisation du coût à 0
         heap.insert(labels[data.getOrigin().getId()]); //Ajout du sommet d'origine au tas
-
+        this.notifyOriginProcessed(data.getOrigin());
         
         // Initialisation : On part d'un sommet -> On le marque
         Label labelMin = null; 
@@ -58,6 +58,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
             //On marque le sommet qu'on vient de retirer
             labelMin.mark = true; 
+            this.notifyNodeMarked(labelMin.currentNode);
 
             Node successor = null;
 
@@ -78,6 +79,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                         }
                         //Sinon, on l'insère dans la pile
                         catch(ElementNotFoundException e){
+                            this.notifyNodeReached(successor);
                         }
                         labels[successor.getId()].realCost = labelMin.getrealCost()+ data.getCost(a);
                         labels[successor.getId()].father = a;
@@ -87,6 +89,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             }
             
         } 
+        this.notifyDestinationReached(data.getDestination());
 
         //Création de la liste d'arcs finale 
         List<Arc> arcs = new ArrayList<Arc>();
