@@ -1,6 +1,4 @@
 package org.insa.graphs.algorithm.shortestpath;
-import java.util.ArrayList;
-
 import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Node;
 

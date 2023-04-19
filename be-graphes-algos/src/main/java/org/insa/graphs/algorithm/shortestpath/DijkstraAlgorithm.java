@@ -21,6 +21,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
     @Override
     protected ShortestPathSolution doRun() {
+        final ShortestPathData data = getInputData();
         ShortestPathSolution solution = null;
 
         //Récupération du graphe et de sa taille
