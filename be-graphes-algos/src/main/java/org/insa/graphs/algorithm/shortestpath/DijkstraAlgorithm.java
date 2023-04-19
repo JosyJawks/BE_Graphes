@@ -2,7 +2,6 @@ package org.insa.graphs.algorithm.shortestpath;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
 import java.util.Collections;
 
 import org.insa.graphs.algorithm.AbstractSolution.Status;
@@ -71,7 +70,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                     //Si le coût réalisé actuel est inférieur à la distance entre les deux noeuds de l'arc
                         //On actualise le coût réalisé
                         //On actualise le father
-                    if(a.getLength() + labelMin.getrealCost() < labels[successor.getId()].getrealCost()){
+                    if(data.isAllowed(a) && data.getCost(a) + labelMin.getrealCost() < labels[successor.getId()].getrealCost()){
                         //On vérifie que le sommet n'est pas déjà dans la pile
                         //S'il est déjà dans la pile, on le met à jour
                         try{
@@ -80,7 +79,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                         //Sinon, on l'insère dans la pile
                         catch(ElementNotFoundException e){
                         }
-                        labels[successor.getId()].realCost = labelMin.getrealCost()+ a.getLength();
+                        labels[successor.getId()].realCost = labelMin.getrealCost()+ data.getCost(a);
                         labels[successor.getId()].father = a;
                         heap.insert(labels[successor.getId()]);
                     }
