@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Node;
 
-public class Label implements Comparable<Label> {
+
+public class Label implements Comparable<Label>{
     
     protected Node currentNode;
 
@@ -14,42 +15,36 @@ public class Label implements Comparable<Label> {
 
     protected Arc father;
 
-    public Label(Node currentNode, boolean mark, double realCost, Arc father)
-    {
-        this.currentNode = currentNode;
-        this.mark = mark;
-        this.realCost = realCost;
-        this.father = father;
-    }
+//Getters
 
-    //Getters
-    public Node getcurrentNode(){
-        return this.currentNode;
-    }
+public Node getcurrentNode(){
+    return this.currentNode;
+}
 
-    public boolean getMark(){
-        return this.mark;
-    }
+public boolean getMark(){
+    return this.mark;
+}
 
-    public double getrealCost(){
-        return this.realCost;
-    }
+public double getrealCost(){
+    return this.realCost;
+}
 
-    public Arc getFather(){
-        return this.father;
-    }
+public Arc getFather(){
+    return this.father;
+}
 
-    //Methods
-    public double getCost(){
-        double cost;
-        cost = this.realCost;
-        return cost;
-    }
 
-    /**
-     * Compare the cost of this label with the cost of the given label.
+//Methods
+public double getCost(){
+    double cost;
+    cost = this.realCost;
+    return cost;
+}
+
+/**
+     * Compare the ID of this node with the ID of the given node.
      * 
-     * @param other Label to compare this node with.
+     * @param other Node to compare this node with.
      * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
@@ -57,7 +52,4 @@ public class Label implements Comparable<Label> {
     public int compareTo(Label other) {
         return Double.compare(getCost(), other.getCost());
     }
-
-
-
 }

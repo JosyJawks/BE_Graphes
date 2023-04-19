@@ -1,15 +1,17 @@
 package org.insa.graphs.algorithm.shortestpath;
 
-import java.util.Collections;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
+import java.util.Collections;
 
 import org.insa.graphs.algorithm.AbstractSolution.Status;
+import org.insa.graphs.model.Arc;
+import org.insa.graphs.model.Graph;
+import org.insa.graphs.model.Node;
+import org.insa.graphs.model.Path;
 import org.insa.graphs.algorithm.utils.BinaryHeap;
 import org.insa.graphs.algorithm.utils.ElementNotFoundException;
-import org.insa.graphs.model.Arc;
-import org.insa.graphs.model.Node;
-import org.insa.graphs.model.Graph;
-import org.insa.graphs.model.Path;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
@@ -21,76 +23,85 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     protected ShortestPathSolution doRun() {
         ShortestPathSolution solution = null;
 
-        // On récupère le Graph
-        ShortestPathData data = getInputData();
+        //Récupération du graphe et de sa taille
         Graph graph = data.getGraph();
 
-        // Initialisation du tableau de labels
-        ArrayList<Label> labels = new ArrayList<Label>();
-        for (Node n : graph.getNodes())
-        {
-            labels.add(new Label(n,false,Float.MAX_VALUE,null));
+        final int nbNodes = graph.size();
+
+        //Création d'un tas
+        BinaryHeap<Label> heap = new BinaryHeap<Label>();
+
+
+        //Création d'un tableau de labels contenant tous les noeuds du graphe
+        Label[] labels = new Label[nbNodes];
+        int i;
+
+        //Initialisation de l'algorithme
+        for(i=0;i<nbNodes;i++){
+            labels[i] = new Label();
+            labels[i].currentNode = graph.get(i);
+            labels[i].mark = false;
+            labels[i].realCost = Double.POSITIVE_INFINITY;
+            labels[i].father = null;
         }
+        
 
-        // Init du tas
-        BinaryHeap<Label> tas = new BinaryHeap<Label>();
-        labels.get(data.getOrigin().getId()).realCost = 0;
-        labels.get(data.getOrigin().getId()).mark = true;
-        tas.insert(labels.get(data.getOrigin().getId()));
+        labels[data.getOrigin().getId()].realCost = 0; //Initialisation du coût à 0
+        heap.insert(labels[data.getOrigin().getId()]); //Ajout du sommet d'origine au tas
 
-        /* ------ ------ ------ Boucle principale ------ ------ ----- */
-        int cpt = 0;
-        Label labActu = null; Label labOrigine = null;
-        while(labels.get(data.getDestination().getId()).mark != true && !tas.isEmpty()) //Tant qu'on a pas atteint la destination ET qu'on a pas marqué tous les noeuds
-        {
-            
-            labOrigine = tas.deleteMin();
-            labOrigine.mark = true;
-            System.out.println("Successeurs : "+labOrigine.currentNode.getSuccessors().size());
+        
+        // Initialisation : On part d'un sommet -> On le marque
+        Label labelMin = null; 
+        while(!labels[data.getDestination().getId()].getMark() && !heap.isEmpty()){ // Deux conditions de fin : Sommet destination marqué ou sommet destination non accessible
+            //On retire la plus petite valeur de la pile
+            labelMin = heap.deleteMin(); 
 
-            for (Arc a : labOrigine.currentNode.getSuccessors())
-            {
-                System.out.println("Iter : "+cpt++);
-                labActu = labels.get(a.getDestination().getId());
-                if (labActu.mark != true)
-                {
-                    if (labOrigine.getrealCost() + a.getLength() < labActu.realCost)
-                    {
-                        try{tas.remove(labActu);} // Permet de tester l'existence de labActu dans le tas
-                        catch(ElementNotFoundException e){System.out.println("Exception!!");}
-                        labActu.realCost = a.getLength() + labOrigine.getrealCost();
-                        labActu.father = a;
-                        tas.insert(labActu);
-                        if(labActu.getcurrentNode().equals(data.getDestination())){
-                            System.out.println("Trouvé : cost =  " + labels.get(data.getDestination().getId()).getCost());
-                            System.out.println("         Calculé = " + labActu.realCost);
+            //On marque le sommet qu'on vient de retirer
+            labelMin.mark = true; 
+
+            Node successor = null;
+
+            //On parcours tous les successeurs du sommet marqué
+            for(Arc a : labelMin.getcurrentNode().getSuccessors()){ 
+                successor = a.getDestination();
+               
+                //Si le sommet n'est pas encore marqué
+                if(!labels[successor.getId()].getMark()){
+                    //Si le coût réalisé actuel est inférieur à la distance entre les deux noeuds de l'arc
+                        //On actualise le coût réalisé
+                        //On actualise le father
+                    if(a.getLength() + labelMin.getrealCost() < labels[successor.getId()].getrealCost()){
+                        //On vérifie que le sommet n'est pas déjà dans la pile
+                        //S'il est déjà dans la pile, on le met à jour
+                        try{
+                            heap.remove(labels[successor.getId()]);
                         }
-
-                    } 
+                        //Sinon, on l'insère dans la pile
+                        catch(ElementNotFoundException e){
+                        }
+                        labels[successor.getId()].realCost = labelMin.getrealCost()+ a.getLength();
+                        labels[successor.getId()].father = a;
+                        heap.insert(labels[successor.getId()]);
+                    }
                 }
             }
+            
+        } 
+
+        //Création de la liste d'arcs finale 
+        List<Arc> arcs = new ArrayList<Arc>();
+        Arc arc = labels[data.getDestination().getId()].getFather();
+
+        while (arc != null) {
+            arcs.add(arc);
+            arc = labels[arc.getOrigin().getId()].getFather();
         }
-
-        //Créer le chemin à l'aide des father
-        ArrayList<Arc> FatherList = new ArrayList<Arc>();
-
-        Arc arc = labels.get(data.getDestination().getId()).father;
-        while(arc != null)
-        {
-            //on ajoute l'arc actuel
-            FatherList.add(arc);
-            //on passe à l'arc suivant
-            arc = labels.get(arc.getOrigin().getId()).father;
-        }
-
-        System.out.println("Size : " + FatherList.size());
 
         //Reverse pour pas commencer par la fin
-        Collections.reverse(FatherList);
+        Collections.reverse(arcs);
 
-        // Create the final solution.
-        solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, FatherList));
-        
+        solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
+
         return solution;
     }
 
