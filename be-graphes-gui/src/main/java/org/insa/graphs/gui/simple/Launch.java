@@ -2,6 +2,7 @@ package org.insa.graphs.gui.simple;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.beans.Transient;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -72,5 +73,4 @@ public class Launch {
         // Draw the path.
         drawing.drawPath(path);
     }
-
 }
