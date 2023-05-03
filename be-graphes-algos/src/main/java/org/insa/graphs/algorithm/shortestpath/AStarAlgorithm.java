@@ -28,6 +28,12 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
 
         final int nbNodes = graph.size();
 
+        //Dans le cas ou le point de départ et le point de destination sont les mêmes, ont retourne directement une solution 
+        if(data.getDestination() == data.getOrigin()){
+            solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, data.getDestination()));
+            return solution;
+        } 
+
         //Création d'un tas
         BinaryHeap<Label> heap = new BinaryHeap<Label>();
 
@@ -91,20 +97,26 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         } 
         this.notifyDestinationReached(data.getDestination());
 
-        //Création de la liste d'arcs finale 
-        List<Arc> arcs = new ArrayList<Arc>();
-        Arc arc = LabelStars[data.getDestination().getId()].getFather();
+        if(LabelStars[data.getDestination().getId()].getMark() == true){ 
+            //Création de la liste d'arcs finale 
+            List<Arc> arcs = new ArrayList<Arc>();
+            Arc arc = LabelStars[data.getDestination().getId()].getFather();
 
-        while (arc != null) {
-            arcs.add(arc);
-            arc = LabelStars[arc.getOrigin().getId()].getFather();
+            while (arc != null) {
+                arcs.add(arc);
+                arc = LabelStars[arc.getOrigin().getId()].getFather();
+            }
+
+            //Reverse pour pas commencer par la fin
+            Collections.reverse(arcs);
+
+            solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
+        } 
+
+        else{
+            solution = new ShortestPathSolution(data, Status.INFEASIBLE, null);
         }
-
-        //Reverse pour pas commencer par la fin
-        Collections.reverse(arcs);
-
-        solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
-
+        
         return solution;
 
     }
