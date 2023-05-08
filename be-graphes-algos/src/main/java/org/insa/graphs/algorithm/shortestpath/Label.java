@@ -39,6 +39,10 @@ public double getCost(){
     return cost;
 }
 
+public double getTotalCost(){
+    return this.getrealCost();
+}
+
 /**
      * Compare the ID of this node with the ID of the given node.
      * 
@@ -48,6 +52,6 @@ public double getCost(){
      */
     @Override
     public int compareTo(Label other) {
-        return Double.compare(getCost(), other.getCost());
+        return Double.compare(getTotalCost(), other.getTotalCost());
     }
 }
