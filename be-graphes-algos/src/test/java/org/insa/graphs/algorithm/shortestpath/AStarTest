@@ -17,7 +17,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.insa.graphs.algorithm.ArcInspectorFactory;
 
-public class DijkstraStarTest {
+public class AStarTest {
     
 
     /* --- --- --- Variables pour tests JUnit --- --- --- */
@@ -29,9 +29,9 @@ public class DijkstraStarTest {
     private static ShortestPathSolution aStarPath_crt2;
 
     // trajet long n°1 -- longueur    --> on va comparer leurs temps et longueurs respectifs pour vérifier que les algorithmes sont cohérents
-    private static ShortestPathSolution aStarPath_lglg1;
+    //private static ShortestPathSolution aStarPath_lglg1;
     // trajet long n°1 -- temps
-    private static ShortestPathSolution aStarPath_lgtps1;
+    //private static ShortestPathSolution aStarPath_lgtps1;
     // trajet long n°2 -- longueur
     private static ShortestPathSolution aStarPath_lglg2;
     // trajet long n°2 -- temps
@@ -55,7 +55,7 @@ public class DijkstraStarTest {
     Node orig_crt1 = graph_crt1.getNodes().get(9); Node dest_crt1 = graph_crt1.getNodes().get(10);
     final BellmanFordAlgorithm bellAlgo_crt1 = new BellmanFordAlgorithm(new ShortestPathData(graph_crt1, orig_crt1, dest_crt1, ArcInspectorFactory.getAllFilters().get(0)));
     bellPath_crt1 = bellAlgo_crt1.doRun();
-    final aStarstraAlgorithm aStarAlgo_crt1 = new AStarAlgorithm(new ShortestPathData(graph_crt1, orig_crt1, dest_crt1, ArcInspectorFactory.getAllFilters().get(0)));
+    final AStarAlgorithm aStarAlgo_crt1 = new AStarAlgorithm(new ShortestPathData(graph_crt1, orig_crt1, dest_crt1, ArcInspectorFactory.getAllFilters().get(0)));
     aStarPath_crt1 = aStarAlgo_crt1.doRun();
 
         // Carte de l'Insa -- On prend un point à l'extrimité nord de la carte et un autre à l'extrémité sud
@@ -65,7 +65,7 @@ public class DijkstraStarTest {
     Node orig_crt2 = graph_crt2.getNodes().get(241); Node dest_crt2 = graph_crt2.getNodes().get(332);
     final BellmanFordAlgorithm bellAlgo_crt2 = new BellmanFordAlgorithm(new ShortestPathData(graph_crt2, orig_crt2, dest_crt2, ArcInspectorFactory.getAllFilters().get(0)));
     bellPath_crt2 = bellAlgo_crt2.doRun();
-    final aStarstraAlgorithm aStarAlgo_crt2 = new AStarAlgorithm(new ShortestPathData(graph_crt2, orig_crt2, dest_crt2, ArcInspectorFactory.getAllFilters().get(0)));
+    final AStarAlgorithm aStarAlgo_crt2 = new AStarAlgorithm(new ShortestPathData(graph_crt2, orig_crt2, dest_crt2, ArcInspectorFactory.getAllFilters().get(0)));
     aStarPath_crt2 = aStarAlgo_crt2.doRun();
     
     
@@ -87,20 +87,20 @@ public class DijkstraStarTest {
         final Graph graph_lg2 = reader_lg2.read();
         Node orig_lg2 = graph_lg2.getNodes().get(597909); Node dest_lg2 = graph_lg2.getNodes().get(536278); //!\\ Pas les bons points 
             // Parcours en temps (uniquement voiture)
-            final aStarstraAlgorithm aStarAlgo_lgtps2 = new AStarAlgorithm(new ShortestPathData(graph_lg2, orig_lg2, dest_lg2, ArcInspectorFactory.getAllFilters().get(2)));
+            final AStarAlgorithm aStarAlgo_lgtps2 = new AStarAlgorithm(new ShortestPathData(graph_lg2, orig_lg2, dest_lg2, ArcInspectorFactory.getAllFilters().get(2)));
             aStarPath_lgtps2 = aStarAlgo_lgtps2.doRun();
             // Parcours en longueur (uniquement voiture)
-            final aStarstraAlgorithm aStarAlgo_lglg2 = new AStarAlgorithm(new ShortestPathData(graph_lg2, orig_lg2, dest_lg2, ArcInspectorFactory.getAllFilters().get(1)));
+            final AStarAlgorithm aStarAlgo_lglg2 = new AStarAlgorithm(new ShortestPathData(graph_lg2, orig_lg2, dest_lg2, ArcInspectorFactory.getAllFilters().get(1)));
             aStarPath_lglg2 = aStarAlgo_lglg2.doRun();
 
 
     // destination == origine
-    final aStarstraAlgorithm aStarAlgo_unnoeud = new AStarAlgorithm(new ShortestPathData(graph_crt1, orig_crt1, orig_crt1, ArcInspectorFactory.getAllFilters().get(0)));
+    final AStarAlgorithm aStarAlgo_unnoeud = new AStarAlgorithm(new ShortestPathData(graph_crt1, orig_crt1, orig_crt1, ArcInspectorFactory.getAllFilters().get(0)));
     aStarPath_unnoeud = aStarAlgo_unnoeud.doRun();
 
     // impossible de relier destination et origine
     Node orig_impo = graph_crt2.getNodes().get(1282); Node dest_impo = graph_crt2.getNodes().get(864);
-    final aStarstraAlgorithm aStarAlgo_impo = new AStarAlgorithm(new ShortestPathData(graph_crt2, orig_impo, dest_impo, ArcInspectorFactory.getAllFilters().get(0)));
+    final AStarAlgorithm aStarAlgo_impo = new AStarAlgorithm(new ShortestPathData(graph_crt2, orig_impo, dest_impo, ArcInspectorFactory.getAllFilters().get(0)));
     aStarPath_infaisable = aStarAlgo_impo.doRun();
     }
     /* --- --- FIN INITALL --- --- --- */
@@ -115,7 +115,7 @@ public class DijkstraStarTest {
         assertEquals(null, bellPath_crt2.getPath().getLength(), aStarPath_crt2.getPath().getLength(), 0);
     }
 
-    @Test 
+    @Test
     public void testLongPath (){ // On teste la cohérence des résultats, pas s'il s'agit effectivement des trajets les plus courts / rapides
         //assertTrue(aStarPath_lglg1.getPath().getLength() <= aStarPath_lgtps1.getPath().getLength());
         assertTrue(aStarPath_lglg2.getPath().getLength() <= aStarPath_lgtps2.getPath().getLength());

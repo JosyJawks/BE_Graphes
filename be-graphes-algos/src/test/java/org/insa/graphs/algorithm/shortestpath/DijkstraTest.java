@@ -29,9 +29,9 @@ public class DijkstraTest {
     private static ShortestPathSolution dijkPath_crt2;
 
     // trajet long n°1 -- longueur    --> on va comparer leurs temps et longueurs respectifs pour vérifier que les algorithmes sont cohérents
-    private static ShortestPathSolution dijkPath_lglg1;
+    //private static ShortestPathSolution dijkPath_lglg1;
     // trajet long n°1 -- temps
-    private static ShortestPathSolution dijkPath_lgtps1;
+    //private static ShortestPathSolution dijkPath_lgtps1;
     // trajet long n°2 -- longueur
     private static ShortestPathSolution dijkPath_lglg2;
     // trajet long n°2 -- temps
