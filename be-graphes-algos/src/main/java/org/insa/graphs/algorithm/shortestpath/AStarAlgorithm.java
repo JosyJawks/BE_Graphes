@@ -46,6 +46,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         for(i=0;i<nbNodes;i++){
             LabelStars[i] = new LabelStar();
             LabelStars[i].currentNode = graph.get(i);
+            LabelStars[i].setEstimateCost(data.getDestination());
             LabelStars[i].mark = false;
             LabelStars[i].realCost = Double.POSITIVE_INFINITY;
             LabelStars[i].father = null;
