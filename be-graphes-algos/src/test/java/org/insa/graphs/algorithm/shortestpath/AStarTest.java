@@ -24,9 +24,11 @@ public class AStarTest {
     // trajet court n°1
     private static ShortestPathSolution bellPath_crt1;
     private static ShortestPathSolution aStarPath_crt1;
+    //private static ShortestPathSolution dijkPath_crt1; // pour le test de SolvingTime
     // trajet court n°2
     private static ShortestPathSolution bellPath_crt2;
     private static ShortestPathSolution aStarPath_crt2;
+    //private static ShortestPathSolution dijkPath_crt2; // pour le test de SolvingTime
 
     // trajet long n°1 -- longueur    --> on va comparer leurs temps et longueurs respectifs pour vérifier que les algorithmes sont cohérents
     //private static ShortestPathSolution aStarPath_lglg1;
@@ -34,8 +36,10 @@ public class AStarTest {
     //private static ShortestPathSolution aStarPath_lgtps1;
     // trajet long n°2 -- longueur
     private static ShortestPathSolution aStarPath_lglg2;
+    //private static ShortestPathSolution dijkPath_lglg2; // pour le test de SolvingTime
     // trajet long n°2 -- temps
     private static ShortestPathSolution aStarPath_lgtps2;
+    //private static ShortestPathSolution dijkPath_lgtps2; // pour le test de SolvingTime
 
 
     // impossible de rejoindre la destination
@@ -57,6 +61,8 @@ public class AStarTest {
     bellPath_crt1 = bellAlgo_crt1.doRun();
     final AStarAlgorithm aStarAlgo_crt1 = new AStarAlgorithm(new ShortestPathData(graph_crt1, orig_crt1, dest_crt1, ArcInspectorFactory.getAllFilters().get(0)));
     aStarPath_crt1 = aStarAlgo_crt1.doRun();
+    //final DijkstraAlgorithm dijkAlgo_crt1 = new DijkstraAlgorithm(new ShortestPathData(graph_crt1, orig_crt1, dest_crt1, ArcInspectorFactory.getAllFilters().get(0)));
+    //dijkPath_crt1 = dijkAlgo_crt1.doRun();
 
         // Carte de l'Insa -- On prend un point à l'extrimité nord de la carte et un autre à l'extrémité sud
     final String mapName_crt2 = "/mnt/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/insa.mapgr";
@@ -67,6 +73,8 @@ public class AStarTest {
     bellPath_crt2 = bellAlgo_crt2.doRun();
     final AStarAlgorithm aStarAlgo_crt2 = new AStarAlgorithm(new ShortestPathData(graph_crt2, orig_crt2, dest_crt2, ArcInspectorFactory.getAllFilters().get(0)));
     aStarPath_crt2 = aStarAlgo_crt2.doRun();
+    //final DijkstraAlgorithm dijkAlgo_crt2 = new DijkstraAlgorithm(new ShortestPathData(graph_crt2, orig_crt2, dest_crt2, ArcInspectorFactory.getAllFilters().get(0)));
+    //dijkPath_crt2 = dijkAlgo_crt2.doRun();
     
     
     //trajets longs
@@ -85,13 +93,17 @@ public class AStarTest {
         final String mapName_lg2 = "/mnt/commetud/3eme Annee MIC/Graphes-et-Algorithmes/Maps/belgium.mapgr";
         final GraphReader reader_lg2 = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(mapName_lg2))));
         final Graph graph_lg2 = reader_lg2.read();
-        Node orig_lg2 = graph_lg2.getNodes().get(597909); Node dest_lg2 = graph_lg2.getNodes().get(536278); //!\\ Pas les bons points 
+        Node orig_lg2 = graph_lg2.getNodes().get(597909); Node dest_lg2 = graph_lg2.getNodes().get(89011);
             // Parcours en temps (uniquement voiture)
             final AStarAlgorithm aStarAlgo_lgtps2 = new AStarAlgorithm(new ShortestPathData(graph_lg2, orig_lg2, dest_lg2, ArcInspectorFactory.getAllFilters().get(2)));
             aStarPath_lgtps2 = aStarAlgo_lgtps2.doRun();
+            //final DijkstraAlgorithm dijkAlgo_lgtps2 = new DijkstraAlgorithm(new ShortestPathData(graph_lg2, orig_lg2, dest_lg2, ArcInspectorFactory.getAllFilters().get(2)));
+            //dijkPath_lgtps2 = dijkAlgo_lgtps2.doRun();
             // Parcours en longueur (uniquement voiture)
             final AStarAlgorithm aStarAlgo_lglg2 = new AStarAlgorithm(new ShortestPathData(graph_lg2, orig_lg2, dest_lg2, ArcInspectorFactory.getAllFilters().get(1)));
             aStarPath_lglg2 = aStarAlgo_lglg2.doRun();
+            //final DijkstraAlgorithm dijkAlgo_lglg2 = new DijkstraAlgorithm(new ShortestPathData(graph_lg2, orig_lg2, dest_lg2, ArcInspectorFactory.getAllFilters().get(1)));
+            //dijkPath_lglg2 = dijkAlgo_lglg2.doRun();
 
 
     // destination == origine
@@ -116,7 +128,7 @@ public class AStarTest {
     }
 
     @Test
-    public void testLongPath (){ // On teste la cohérence des résultats, pas s'il s'agit effectivement des trajets les plus courts / rapides
+    public void testLongPath (){ // On teste la cohérence des résultats entre eux, pas s'il s'agit effectivement des trajets les plus courts / rapides existants
         //assertTrue(aStarPath_lglg1.getPath().getLength() <= aStarPath_lgtps1.getPath().getLength());
         assertTrue(aStarPath_lglg2.getPath().getLength() <= aStarPath_lgtps2.getPath().getLength());
         //assertTrue(aStarPath_lglg1.getPath().getMinimumTravelTime() >= aStarPath_lgtps1.getPath().getMinimumTravelTime());
@@ -132,5 +144,14 @@ public class AStarTest {
     public void testInfeasiblePath (){
         assertFalse(aStarPath_infaisable.isFeasible());
     } 
+
+    /*@Test
+    public void testSolvingTime (){
+        System.out.println(bellPath_crt1.getSolvingTime());
+        assertTrue(aStarPath_crt1.getSolvingTime().compareTo(dijkPath_crt1.getSolvingTime()) == 0);
+        assertTrue(aStarPath_crt2.getSolvingTime().compareTo(dijkPath_crt2.getSolvingTime()) == 0);
+        assertTrue(aStarPath_lglg2.getSolvingTime().compareTo(dijkPath_lglg2.getSolvingTime()) == 0);
+        assertTrue(aStarPath_lgtps2.getSolvingTime().compareTo(dijkPath_lgtps2.getSolvingTime()) == 0);
+    }*/
     /* --- --- --- --- --- --- --- --- --- --- */
 }
