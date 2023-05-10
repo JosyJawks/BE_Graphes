@@ -18,6 +18,19 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         super(data);
     }
 
+
+    public void Init(Label[] Labels, Graph graph, ShortestPathData data){
+        int i;
+        //Initialisation de l'algorithme
+        for(i=0;i<Labels.length;i++){
+            Labels[i] = new Label();
+            Labels[i].currentNode = graph.get(i);
+            Labels[i].mark = false;
+            Labels[i].realCost = Double.POSITIVE_INFINITY;
+            Labels[i].father = null;
+        }
+    }
+
     @Override
     protected ShortestPathSolution doRun() {
         final ShortestPathData data = getInputData();
@@ -41,16 +54,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
         //Création d'un tableau de labels contenant tous les noeuds du graphe
         Label[] labels = new Label[nbNodes];
-        int i;
 
-        //Initialisation de l'algorithme
-        for(i=0;i<nbNodes;i++){
-            labels[i] = new Label();
-            labels[i].currentNode = graph.get(i);
-            labels[i].mark = false;
-            labels[i].realCost = Double.POSITIVE_INFINITY;
-            labels[i].father = null;
-        }
+
+        Init(labels,graph,data);
         
 
         labels[data.getOrigin().getId()].realCost = 0; //Initialisation du coût à 0
